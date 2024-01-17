@@ -1,0 +1,434 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+html{
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.container{
+    background-color: rgb(205, 205, 205);
+    width: 100%;
+
+    height: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    position: relative;
+}
+
+.header{
+    background-color: gray;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5em 1em;
+    overflow: hidden;
+}
+
+.header1{
+    text-transform: uppercase;
+    font-style: bold;
+}
+
+.flex{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.breadcrum > b{
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    text-align: center;
+    padding: .5em 1em;
+}
+
+.breadcrum > b> div{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.breadcrum >b> div:nth-child(odd){
+    cursor: pointer;
+}
+
+.day-of-week > div {
+    font-size: .5em;
+    height: 3em;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    justify-content: center;
+    width: 100%;
+}
+
+/* The grid */
+.day-of-week,
+.date-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+/* 
+.date-grid button:first-child {
+    grid-column: attr(data-day);
+} */
+
+.date-grid{
+    grid-gap: .1em;
+    margin-inline: .1em;
+}
+
+.date-grid > button{
+    height: 2.25em;
+    outline: 1px solid black;
+    /* border-radius: 6px; */
+    font-size: 1.5em;
+    user-select: none;
+    cursor: pointer;
+    border: none;
+}
+
+
+
+
+.date-grid > button.absent{
+    background-color: #c6c6c6;
+    color: black;
+}
+
+.date-grid > button.today{
+    background-color: white;
+    color: black;
+}
+
+.date-grid > button:hover{
+    background-color: #797979;
+}
+
+.date-grid > button.selected{
+    background-color: #b6b62d;
+}
+
+
+
+#closeBtn{
+    border: none;
+    background: none;
+    font-size: 1.5em;
+    padding: 0.1em 0.5em;
+    cursor: pointer;
+}
+
+.date-grid > button.present{
+    background-color: #28bd4b;
+    color: white;
+}
+
+.day{
+    width: 100%;
+    background-color: rgb(221, 221, 221);
+    height: 6em;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+}
+
+.present_button{
+    border: 2px solid #28bd4b;
+    background-color: #28bd4b;
+    outline: none;
+    padding: 1em 1em;
+    border-radius: 8px;
+    color: white;
+    width: 60%;
+    cursor: pointer;
+    font-weight: bold;
+
+}
+
+.present_button:hover{
+    border-color: #28bd4b;
+    background-color: #26b948;
+}
+
+.present_button:active{
+    border-color: #28bd4b;
+    background-color: #1c8635;
+}
+
+.more_button{
+    border: 2px solid #7a7a7a;
+    background-color: #686868;
+    outline: none;
+    padding: .3em .75em;
+    border-radius: 8px;
+    color: white;
+    width: 15%;
+    font-size: 1.5em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+
+}
+
+.more_button:hover{
+    border-color: #7a7a7a;
+    background-color: #606060;
+}
+
+.more_button:active{
+    border-color: #7a7a7a;
+    background-color: #515151;
+}
+
+
+.present_button:disabled{
+    border-color: #28bd4b;
+    background-color: #26b948;
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.backup_button{
+    border: 2px solid gray;
+    background-color: gray;
+    outline: none;
+    padding: 1em 1em;
+    border-radius: 8px;
+    color: white;
+    width: 20%;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14em;
+    margin-right: 1.5em;
+    font-weight: bold;
+
+}
+
+.backup_button:hover{
+    border-color: gray;
+    background-color: gray;
+}
+
+.backup_button:active{
+    border-color: gray;
+    background-color: rgb(102, 102, 102);
+}
+
+.load_backup_button{
+    border: 2px solid gray;
+    background-color: gray;
+    outline: none;
+    padding: 1em 1em;
+    border-radius: 8px;
+    color: white;
+    width: 20%;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10em;
+    margin-right: 1.5em;
+    font-weight: bold;
+
+}
+
+.load_backup_button:hover{
+    border-color: gray;
+    background-color: gray;
+}
+
+.load_backup_button:active{
+    border-color: gray;
+    background-color: rgb(102, 102, 102);
+}
+
+.clear_button{
+    border: 2px solid gray;
+    background-color: gray;
+    outline: none;
+    padding: 1em 1em;
+    border-radius: 8px;
+    color: white;
+    width: 20%;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6em;
+    margin-right: 1.5em;
+    font-weight: bold;
+
+}
+
+.clear_button:hover{
+    border-color: gray;
+    background-color: gray;
+}
+
+.clear_button:active{
+    border-color: gray;
+    background-color: rgb(102, 102, 102);
+}
+
+.absent_button{
+    border: 2px solid gray;
+    background-color: gray;
+    outline: none;
+    padding: 1em 1em;
+    border-radius: 8px;
+    color: white;
+    width: 30%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+
+}
+
+.absent_button:hover{
+    border-color: gray;
+    background-color: gray;
+}
+
+.absent_button:active{
+    border-color: gray;
+    background-color: rgb(102, 102, 102);
+}
+
+
+#portal{
+    border-radius: 8px;
+    position: absolute;
+    background-color: rgb(214, 214, 214);
+    width: 90%;
+    padding: .5em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+#user-register{
+    border-radius: 8px;
+    position: absolute;
+    background-color: rgb(214, 214, 214);
+    width: 90%;
+    padding: .5em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.body{
+    margin-top: 1em;
+}
+
+.body form{
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+
+
+.body form input{
+    line-height: 3;
+    padding-inline: 1em;
+    border-radius: 8px;
+    border: 1px solid black;
+}
+
+.proceed_button{
+    border: none;
+    outline: none;
+    padding: 1em;
+    cursor: pointer;
+    background-color: #28bd4b;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+}
+
+#blur{
+    z-index: 99;
+    background: rgba(0, 0, 0, .75);
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#portal > .select {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-top: 1em;
+    height: 80vh;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+#portal > .select > .option{
+    background-color: #aaaaaa;
+    padding: 1em .75em;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+#portal > .select > .option:active{
+    background-color: rgb(31, 31, 31);
+    color: white;
+}
+
+.hidden{
+    display: none;
+}
+
+.row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: .5em;
+}
