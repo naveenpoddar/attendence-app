@@ -1,165 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Attendence App</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="shortcut icon" href="favicon.png" type="image/png" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="header">
-        <div class="flex header1">
-          <h5><span id="std_name">Naveen</span></h5>
-        </div>
 
-        <div class="flex">
-          <h5>Session: <span id="session-label">2022-2025</span></h5>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attendence App</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="shortcut icon" href="favicon.png" type="image/png" />
+</head>
 
-        <div class="flex">
-          <h5 id="branch-label">CSE</h5>
-        </div>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="flex header1">
+        <h5><span id="std_name">Naveen</span></h5>
       </div>
 
-      <div class="body">
-        <div class="breadcrum">
-          <b>
-            <div id="breadcrum-year" class="path">2023</div>
-            <div class="path">></div>
-            <div id="breadcrum-month" class="path">January</div>
-            <div class="path">></div>
-            <div id="breadcrum-class" class="path">Web Technology</div>
-          </b>
-        </div>
-
-        <hr />
-
-        <div class="calander">
-          <div class="day-of-week">
-            <div>Sunday</div>
-            <div>Monday</div>
-            <div>Tuesday</div>
-            <div>Wednesday</div>
-            <div>Thrusday</div>
-            <div>Friday</div>
-            <div>Saturday</div>
-          </div>
-
-          <div id="date-grid" class="date-grid">
-            <button><time datetime="2019-02-01">1</time></button>
-            <button><time datetime="2019-02-02">2</time></button>
-            <button><time datetime="2019-02-03">3</time></button>
-            <button><time datetime="2019-02-03">4</time></button>
-            <button><time datetime="2019-02-03">5</time></button>
-            <button><time datetime="2019-02-03">6</time></button>
-            <button><time datetime="2019-02-03">7</time></button>
-            <button><time datetime="2019-02-03">8</time></button>
-            <button><time datetime="2019-02-03">9</time></button>
-            <button><time datetime="2019-02-03">10</time></button>
-            <button><time datetime="2019-02-03">11</time></button>
-            <button><time datetime="2019-02-03">12</time></button>
-            <button><time datetime="2019-02-03">13</time></button>
-            <button><time datetime="2019-02-03">14</time></button>
-            <button><time datetime="2019-02-03">15</time></button>
-            <button><time datetime="2019-02-03">16</time></button>
-            <button><time datetime="2019-02-03">17</time></button>
-            <button><time datetime="2019-02-03">18</time></button>
-            <button><time datetime="2019-02-03">19</time></button>
-            <button><time datetime="2019-02-03">20</time></button>
-            <button><time datetime="2019-02-03">21</time></button>
-            <button><time datetime="2019-02-03">22</time></button>
-            <button><time datetime="2019-02-03">23</time></button>
-            <button><time datetime="2019-02-03">24</time></button>
-            <button><time datetime="2019-02-03">25</time></button>
-            <button><time datetime="2019-02-03">26</time></button>
-            <button><time datetime="2019-02-03">27</time></button>
-            <button><time datetime="2019-02-03">28</time></button>
-            <button><time datetime="2019-02-03">29</time></button>
-            <button><time datetime="2019-02-03">30</time></button>
-            <button><time datetime="2019-02-03">31</time></button>
-          </div>
-        </div>
-
-        <div class="day">
-          <button id="absent_button" class="absent_button hidden">
-            Mark Absent
-          </button>
-          <button id="present_button" class="present_button">
-            I am Present
-          </button>
-          <button id="more_button" class="more_button">⁝</button>
-        </div>
+      <div class="flex">
+        <h5>Session: <span id="session-label">2022-2025</span></h5>
       </div>
-    </div>
-    <button id="backup_button" class="backup_button hidden">Save Backup</button>
-    <button id="load_backup_button" class="load_backup_button hidden">
-      Load Backup
-    </button>
-    <button id="clear_button" class="clear_button hidden">Clear Data</button>
 
-    <div id="blur" class="hidden"></div>
-    <div id="portal" class="hidden">
-      <div class="row">
-        <h4 id="selectTitle">Select Year</h4>
-        <button id="closeBtn">X</button>
-      </div>
-      <div id="options" class="select">
-        <button class="option">Option 1</button>
-        <button class="option">Option 2</button>
-        <button class="option">Option 3</button>
+      <div class="flex">
+        <h5 id="branch-label">CSE</h5>
       </div>
     </div>
 
-    <div id="user-register" class="hidden">
-      <h3 id="selectTitle">Welcome to Attendence App</h3>
-      <p>Please Register below with your college details to proceed</p>
-      <div class="body">
-        <form id="reg-form">
-          <input
-            type="text"
-            id="student_name"
-            name="student_name"
-            placeholder="Student Name"
-            maxlength="40"
-            required
-          />
-          <input
-            type="text"
-            id="branch"
-            name="branch"
-            placeholder="Branch (CSE, ME, EE, CE)"
-            maxlength="30"
-            required
-            value="CSE"
-            readonly
-          />
+    <div class="body">
+      <div class="breadcrum">
+        <b>
+          <div id="breadcrum-year" class="path breadcrum-element">2023</div>
+          <div class="path">/</div>
+          <div id="breadcrum-month" class="path breadcrum-element">January</div>
+          <div class="path">/</div>
+          <div id="breadcrum-class" class="path breadcrum-element">Web Technology</div>
+        </b>
+      </div>
 
-          <input
-            type="number"
-            id="sessionStart"
-            name="sessionStart"
-            placeholder="Session Start"
-            required
-            inputmode="numeric"
-            value="2022"
-          />
-          <input
-            type="number"
-            id="sessionEnd"
-            name="sessionEnd"
-            placeholder="Session End"
-            required
-            inputmode="numeric"
-            value="2025"
-          />
+      <hr />
 
-          <button class="proceed_button" id="proceed-button">Proceed!</button>
-        </form>
+      <div class="calander">
+        <div class="day-of-week">
+          <div>Sunday</div>
+          <div>Monday</div>
+          <div>Tuesday</div>
+          <div>Wednesday</div>
+          <div>Thrusday</div>
+          <div>Friday</div>
+          <div>Saturday</div>
+        </div>
+
+        <div id="date-grid" class="date-grid">
+          <button><time datetime="2019-02-01">1</time></button>
+          <button><time datetime="2019-02-02">2</time></button>
+          <button><time datetime="2019-02-03">3</time></button>
+          <button><time datetime="2019-02-03">4</time></button>
+          <button><time datetime="2019-02-03">5</time></button>
+          <button><time datetime="2019-02-03">6</time></button>
+          <button><time datetime="2019-02-03">7</time></button>
+          <button><time datetime="2019-02-03">8</time></button>
+          <button><time datetime="2019-02-03">9</time></button>
+          <button><time datetime="2019-02-03">10</time></button>
+          <button><time datetime="2019-02-03">11</time></button>
+          <button><time datetime="2019-02-03">12</time></button>
+          <button><time datetime="2019-02-03">13</time></button>
+          <button><time datetime="2019-02-03">14</time></button>
+          <button><time datetime="2019-02-03">15</time></button>
+          <button><time datetime="2019-02-03">16</time></button>
+          <button><time datetime="2019-02-03">17</time></button>
+          <button><time datetime="2019-02-03">18</time></button>
+          <button><time datetime="2019-02-03">19</time></button>
+          <button><time datetime="2019-02-03">20</time></button>
+          <button><time datetime="2019-02-03">21</time></button>
+          <button><time datetime="2019-02-03">22</time></button>
+          <button><time datetime="2019-02-03">23</time></button>
+          <button><time datetime="2019-02-03">24</time></button>
+          <button><time datetime="2019-02-03">25</time></button>
+          <button><time datetime="2019-02-03">26</time></button>
+          <button><time datetime="2019-02-03">27</time></button>
+          <button><time datetime="2019-02-03">28</time></button>
+          <button><time datetime="2019-02-03">29</time></button>
+          <button><time datetime="2019-02-03">30</time></button>
+          <button><time datetime="2019-02-03">31</time></button>
+        </div>
+      </div>
+
+      <div class="day">
+        <button id="absent_button" class="absent_button hidden">
+          X
+        </button>
+        <button id="present_button" class="present_button">
+          Write Present
+        </button>
+        <button id="more_button" class="more_button">⁝</button>
       </div>
     </div>
+  </div>
+  <button id="backup_button" class="backup_button hidden">Save Backup</button>
+  <button id="load_backup_button" class="load_backup_button hidden">
+    Load Backup
+  </button>
+  <button id="clear_button" class="clear_button hidden">Clear Data</button>
 
-    <script src="script.js"></script>
-  </body>
+  <div id="blur" class="hidden"></div>
+  <div id="portal" class="hidden">
+    <div class="row">
+      <h4 id="selectTitle">Select Year</h4>
+      <button id="closeBtn">X</button>
+    </div>
+    <div id="options" class="select">
+      <button class="option">Option 1</button>
+      <button class="option">Option 2</button>
+      <button class="option">Option 3</button>
+    </div>
+  </div>
+
+  <div id="user-register" class="hidden">
+    <h3 id="selectTitle">Welcome to Attendence App</h3>
+    <p>Please Register below with your college details to proceed</p>
+    <div class="form-body">
+      <form id="reg-form">
+        <label for="student_name">Student name</label>
+        <input type="text" id="student_name" name="student_name" maxlength="40" required placeholder="(i.e. Alex)" />
+
+
+        <label for="sessionStart">Lectures ?</label>
+        <div class="lectures-list" id="lectures-list">
+          <template id="lecture-template">
+            <div class="lecture-item">
+              <input placeholder="Lecture Name" type="text" class="lecture_name" required>
+              <input placeholder="Teacher Name" type="text" class="lecture_teacher" required>
+              <div class="remove_lecture_button">X</div>
+            </div>
+          </template>
+        </div>
+        <div class="add_lecture_button" id="add_lecture_button">Add Lecture</div>
+
+
+        <label for="branch">(Optional Fields)</label>
+        <label for="branch">Branch</label>
+        <input type="text" id="branch" name="branch" placeholder="Branch (CSE, ME, EE, CE)" maxlength="30" required
+          value="CSE" />
+
+        <label for="sessionStart">Session Start ?</label>
+        <input type="number" id="sessionStart" name="sessionStart" placeholder="YYYY (i.e. 2022)" required
+          inputmode="numeric" value="2022" />
+
+        <label for="sessionStart">Session End ?</label>
+        <input type="number" id="sessionEnd" name="sessionEnd" placeholder="YYYY (i.e. 2024)" required
+          inputmode="numeric" value="2025" />
+
+
+        <button class="proceed_button" id="proceed-button" type="submit">Proceed!</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
 </html>

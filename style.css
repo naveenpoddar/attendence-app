@@ -1,18 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Open Sans', sans-serif;
 }
 
-html{
+html {
     width: 100%;
     height: 100%;
 }
 
-body{
+body {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,7 +20,7 @@ body{
     height: 100%;
 }
 
-.container{
+.container {
     background-color: rgb(205, 205, 205);
     width: 100%;
 
@@ -30,8 +30,13 @@ body{
     position: relative;
 }
 
-.header{
-    background-color: gray;
+.calander {
+    margin-bottom: 7em;
+}
+
+.header {
+    background-color: #365c9f;
+    color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -39,18 +44,60 @@ body{
     overflow: hidden;
 }
 
-.header1{
+.header1 {
     text-transform: uppercase;
     font-style: bold;
 }
 
-.flex{
+.flex {
     display: flex;
     align-items: center;
     gap: 1em;
 }
 
-.breadcrum > b{
+#breadcrum-year {
+    background-color: #365c9f;
+    color: white;
+}
+
+#breadcrum-month {
+    background-color: #365c9f;
+    color: white;
+}
+
+#breadcrum-class {
+    background-color: #365c9f;
+    color: white;
+    width: 100%;
+}
+
+.breadcrum-element {
+    padding: .5em 1em;
+    padding-right: 2em;
+    border-radius: 1rem;
+    position: relative;
+}
+
+.breadcrum-element:after {
+    content: '';
+    --border-color: white;
+    --border-size: 3px;
+    --arrow-size: 8px;
+
+    position: absolute;
+    right: 1em;
+    top: 45%;
+    display: block;
+    border-left: var(--border-size) solid var(--border-color);
+    border-top: var(--border-size) solid var(--border-color);
+    width: var(--arrow-size);
+    height: var(--arrow-size);
+    float: right;
+    transform: translate(50%, -50%) rotate(225deg);
+
+}
+
+.breadcrum>b {
     display: flex;
     gap: 1em;
     align-items: center;
@@ -58,17 +105,17 @@ body{
     padding: .5em 1em;
 }
 
-.breadcrum > b> div{
+.breadcrum>b>div {
     height: 100%;
     display: flex;
     align-items: center;
 }
 
-.breadcrum >b> div:nth-child(odd){
+.breadcrum>b>div:nth-child(odd) {
     cursor: pointer;
 }
 
-.day-of-week > div {
+.day-of-week>div {
     font-size: .5em;
     height: 3em;
     text-align: center;
@@ -82,8 +129,8 @@ body{
 /* The grid */
 .day-of-week,
 .date-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
 }
 
 /* 
@@ -91,12 +138,12 @@ body{
     grid-column: attr(data-day);
 } */
 
-.date-grid{
+.date-grid {
     grid-gap: .1em;
     margin-inline: .1em;
 }
 
-.date-grid > button{
+.date-grid>button {
     height: 2.25em;
     outline: 1px solid black;
     /* border-radius: 6px; */
@@ -104,32 +151,33 @@ body{
     user-select: none;
     cursor: pointer;
     border: none;
+    transition: 200ms ease-in-out;
 }
 
 
 
 
-.date-grid > button.absent{
+.date-grid>button.absent {
     background-color: #c6c6c6;
     color: black;
 }
 
-.date-grid > button.today{
+.date-grid>button.today {
     background-color: white;
     color: black;
 }
 
-.date-grid > button:hover{
+.date-grid>button:hover {
+    background-color: #b7b7b7;
+}
+
+.date-grid>button.selected {
     background-color: #797979;
 }
 
-.date-grid > button.selected{
-    background-color: #b6b62d;
-}
 
 
-
-#closeBtn{
+#closeBtn {
     border: none;
     background: none;
     font-size: 1.5em;
@@ -137,12 +185,12 @@ body{
     cursor: pointer;
 }
 
-.date-grid > button.present{
+.date-grid>button.present {
     background-color: #28bd4b;
     color: white;
 }
 
-.day{
+.day {
     width: 100%;
     background-color: rgb(221, 221, 221);
     height: 6em;
@@ -154,67 +202,66 @@ body{
     align-items: center;
     justify-content: center;
     gap: 1em;
+    padding-inline: 1em;
 }
 
-.present_button{
+.present_button {
     border: 2px solid #28bd4b;
     background-color: #28bd4b;
     outline: none;
     padding: 1em 1em;
     border-radius: 8px;
     color: white;
-    width: 60%;
+    width: 100%;
     cursor: pointer;
     font-weight: bold;
 
 }
 
-.present_button:hover{
+.present_button:hover {
     border-color: #28bd4b;
     background-color: #26b948;
 }
 
-.present_button:active{
+.present_button:active {
     border-color: #28bd4b;
     background-color: #1c8635;
 }
 
-.more_button{
+.more_button {
     border: 2px solid #7a7a7a;
-    background-color: #686868;
     outline: none;
     padding: .3em .75em;
     border-radius: 8px;
-    color: white;
-    width: 15%;
+    color: black;
+    width: 4rem;
     font-size: 1.5em;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-
 }
 
-.more_button:hover{
+.more_button:hover {
     border-color: #7a7a7a;
     background-color: #606060;
 }
 
-.more_button:active{
+.more_button:active {
     border-color: #7a7a7a;
     background-color: #515151;
 }
 
 
-.present_button:disabled{
+.present_button:disabled {
     border-color: #28bd4b;
     background-color: #26b948;
     opacity: .4;
     cursor: not-allowed;
 }
 
-.backup_button{
+.backup_button {
     border: 2px solid gray;
     background-color: gray;
     outline: none;
@@ -235,17 +282,17 @@ body{
 
 }
 
-.backup_button:hover{
+.backup_button:hover {
     border-color: gray;
     background-color: gray;
 }
 
-.backup_button:active{
+.backup_button:active {
     border-color: gray;
     background-color: rgb(102, 102, 102);
 }
 
-.load_backup_button{
+.load_backup_button {
     border: 2px solid gray;
     background-color: gray;
     outline: none;
@@ -266,17 +313,17 @@ body{
 
 }
 
-.load_backup_button:hover{
+.load_backup_button:hover {
     border-color: gray;
     background-color: gray;
 }
 
-.load_backup_button:active{
+.load_backup_button:active {
     border-color: gray;
     background-color: rgb(102, 102, 102);
 }
 
-.clear_button{
+.clear_button {
     border: 2px solid gray;
     background-color: gray;
     outline: none;
@@ -297,44 +344,44 @@ body{
 
 }
 
-.clear_button:hover{
+.clear_button:hover {
     border-color: gray;
     background-color: gray;
 }
 
-.clear_button:active{
+.clear_button:active {
     border-color: gray;
     background-color: rgb(102, 102, 102);
 }
 
-.absent_button{
-    border: 2px solid gray;
-    background-color: gray;
+.absent_button {
+    border: 2px solid #b32f2f;
+    background-color: #f53c3c;
     outline: none;
-    padding: 1em 1em;
+    padding: .5rem;
     border-radius: 8px;
     color: white;
-    width: 30%;
+    width: 4rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-
+    font-size: 1.5em;
 }
 
-.absent_button:hover{
-    border-color: gray;
-    background-color: gray;
+.absent_button:hover {
+    border: 2px solid #832626;
+    background-color: rgb(246, 80, 80);
 }
 
-.absent_button:active{
-    border-color: gray;
-    background-color: rgb(102, 102, 102);
+.absent_button:active {
+    border: 2px solid #823f3f;
+    background-color: rgb(255, 143, 143)
 }
 
 
-#portal{
+#portal {
     border-radius: 8px;
     position: absolute;
     background-color: rgb(214, 214, 214);
@@ -346,37 +393,46 @@ body{
     z-index: 100;
 }
 
-#user-register{
+#user-register {
     border-radius: 8px;
     position: absolute;
     background-color: rgb(214, 214, 214);
     width: 90%;
     padding: .5em;
-    top: 50%;
+    top: 0;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0%);
     z-index: 100;
+    margin-top: 3rem;
 }
 
-.body{
-    margin-top: 1em;
+#reg-form label {
+    font-weight: bold;
+    font-size: .8em;
+    transform: translateY(25%);
 }
 
-.body form{
+.body {
+    padding-top: 1em;
+    overflow: scroll;
+    height: 100%;
+}
+
+.form-body form {
     display: flex;
     flex-direction: column;
     gap: .5em;
 }
 
 
-.body form input{
+.form-body form input {
     line-height: 3;
     padding-inline: 1em;
     border-radius: 8px;
     border: 1px solid black;
 }
 
-.proceed_button{
+.proceed_button {
     border: none;
     outline: none;
     padding: 1em;
@@ -385,19 +441,63 @@ body{
     border-radius: 8px;
     color: white;
     font-weight: bold;
+    width: 100%;
 }
 
-#blur{
+.lectures-list {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+
+}
+
+.lecture-item {
+    display: flex;
+    width: 100%;
+    gap: .5em;
+}
+
+.lecture-item>.lecture_name,
+.lecture-item>.lecture_teacher {
+    width: 50%;
+}
+
+.lecture-item>.remove_lecture_button {
+    background-color: gray;
+    width: 3rem;
+    font-size: 1.25em;
+    text-align: center;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+}
+
+.add_lecture_button {
+    background-color: gray;
+    text-align: center;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5em;
+    margin-block: 1em;
+    cursor: pointer;
+}
+
+#blur {
     z-index: 99;
     background: rgba(0, 0, 0, .75);
     width: 100vw;
-    height: 100vh;
+    height: 150vh;
     position: absolute;
     top: 0;
     left: 0;
 }
 
-#portal > .select {
+#portal>.select {
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -407,7 +507,7 @@ body{
     overflow-y: auto;
 }
 
-#portal > .select > .option{
+#portal>.select>.option {
     background-color: #aaaaaa;
     padding: 1em .75em;
     border-radius: 8px;
@@ -417,16 +517,16 @@ body{
     cursor: pointer;
 }
 
-#portal > .select > .option:active{
+#portal>.select>.option:active {
     background-color: rgb(31, 31, 31);
     color: white;
 }
 
-.hidden{
+.hidden {
     display: none;
 }
 
-.row{
+.row {
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -27,7 +27,7 @@ const studentName = document.getElementById("std_name");
 const regForm = document.getElementById("reg-form");
 const proceedButton = document.getElementById("proceed-button");
 
-proceedButton.addEventListener("click", (e) => {
+regForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const fd = new FormData(regForm);
   const formData = {};
@@ -44,11 +44,59 @@ proceedButton.addEventListener("click", (e) => {
 });
 
 const regPortalEL = document.getElementById("user-register");
+const lectruesListEl = document.getElementById("lectures-list");
+const addLectureBtn = document.getElementById("add_lecture_button");
+const lectureItemTemplate = document.getElementById("lecture-template");
+
+const handleLectureNameEdit = (index) => (e) => {
+  classes[index].class_name = e.target.value;
+};
+
+const handleLectureTeacherEdit = (index) => (e) => {
+  classes[index].teacher_name = e.target.value;
+};
+
+const handleLectureRemove = (index) => (e) => {
+  classes = classes.filter((_class, _index) => _index != index);
+  UpdateLectureList();
+};
 
 function StartRegistration() {
   // SHow Registration PortalDialog
   ShowRegPortal(true);
+  AddNewLecture();
 }
+
+addLectureBtn.addEventListener("click", AddNewLecture);
+
+
+function AddNewLecture() {
+  classes.push({
+    class_id: classes.length + 1,
+    class_name: "",
+    teacher_name: "",
+  });
+  UpdateLectureList();
+}
+
+function UpdateLectureList() {
+  lectruesListEl.replaceChildren();
+  classes.forEach((_class, _index) => {
+    let clone = lectureItemTemplate.content.cloneNode(true).firstElementChild;
+
+    let lectureName = clone.getElementsByClassName("lecture_name")[0];
+    lectureName.value = _class.class_name;
+    lectureName.addEventListener("change", handleLectureNameEdit(_index));
+
+    let lectureTeacher = clone.getElementsByClassName("lecture_teacher")[0];
+    lectureTeacher.value = _class.teacher_name;
+    lectureTeacher.addEventListener("change", handleLectureTeacherEdit(_index))
+
+    clone.getElementsByClassName("remove_lecture_button")[0].addEventListener("click", handleLectureRemove(_index))
+    lectruesListEl.appendChild(clone);
+  });
+}
+
 
 function ShowRegPortal(show) {
   if (show) {
@@ -61,10 +109,11 @@ function ShowRegPortal(show) {
 }
 
 yearBreadcum.addEventListener("click", async () => {
-  const options = data.years.map((y) => ({
-    key: y.date_YYYY,
-    value: y.date_YYYY,
-  }));
+  const options = [];
+  for (let i = 0; i <= data.sessionEnd - data.sessionStart; i++) {
+    const year = data.sessionStart + i;
+    options.push({ key: year, value: year });
+  }
   const value = await GetInput("Select year", options).catch(() => null);
   if (value != null) {
     SelectClass(value, selectedMonth, selectedClass);
@@ -83,8 +132,8 @@ monthBreadcum.addEventListener("click", async () => {
 });
 
 classbreadcum.addEventListener("click", async () => {
-  const options = classes.map((c) => ({
-    key: `${c.class_name} [${c.teacher_name}]`,
+  const options = data.classes.map((c) => ({
+    key: `${c.class_name} - ${c.teacher_name}`,
     value: c.class_id,
   }));
   const value = await GetInput("Select Class", options).catch(() => null);
@@ -112,7 +161,7 @@ function SelectClass(year, month, classId) {
   selectedDate = -1;
   presentButton.disabled = true;
   absentButton.disabled = true;
-  let classObj = classes.find((c) => c.class_id === classId);
+  let classObj = data.classes.find((c) => c.class_id === classId);
 
   studentName.textContent = data.student_name;
   branchLabel.textContent = data.branch;
@@ -120,7 +169,7 @@ function SelectClass(year, month, classId) {
 
   yearBreadcum.textContent = year;
   monthBreadcum.textContent = monthNames[month - 1];
-  classbreadcum.textContent = classObj.class_name;
+  classbreadcum.textContent = `${classObj.class_name} - ${classObj.teacher_name}`;
 
   selectedYear = year;
   selectedClass = classId;
@@ -132,41 +181,53 @@ function SelectClass(year, month, classId) {
 function RenderDates() {
   dates.replaceChildren();
 
-  const yearObj = data.years.find((y) => y.date_YYYY === selectedYear);
-  const monthObj = yearObj.months.find((m) => m.date_MM === selectedMonth);
-  monthObj.days.forEach((day) => {
+  const numberOfdays = new Date(selectedYear, selectedMonth, 0).getDate();
+
+  for (let day = 1; day <= numberOfdays; day++) {
     const dateNode = document.createElement("button");
     const timeNode = document.createElement("time");
 
-    const _date = new Date(selectedYear, selectedMonth - 1, day.date_DD);
+    const _date = new Date(selectedYear, selectedMonth - 1, day);
     timeNode.dateTime = _date;
-    timeNode.textContent = day.date_DD;
+    timeNode.textContent = day;
 
-    if (day.date_DD === 1) {
+    if (day === 1) {
       dateNode.style.gridColumn = _date.getDay() + 1;
     }
 
     const todayDD = new Date(Date.now());
 
     if (
-      todayDD.getDate() === day.date_DD &&
-      todayDD.getMonth() + 1 === day.date_MM &&
-      todayDD.getFullYear() === day.date_YYYY
+      todayDD.getDate() === day &&
+      todayDD.getMonth() + 1 === selectedMonth &&
+      todayDD.getFullYear() === selectedYear
     ) {
       dateNode.classList.add("today");
     }
 
-    let period = day.periods.find((p) => p.class.class_id === selectedClass);
 
-    if (!period) {
-      period = day.periods.find((p) => p.class.class_id === 0);
-      period.class.class_id = selectedClass;
 
-      const _sc = classes.find((c) => c.class_id === selectedClass);
-      period.class = _sc;
+    let presentList = data.presentList;
+    if (presentList == null) {
+      presentList = [];
+    } else {
+      presentList = data.presentList[selectedYear];
+      if (presentList == null) {
+        presentList = [];
+      } else {
+        presentList = data.presentList[selectedYear][selectedMonth];
+        if (presentList == null) {
+          presentList = [];
+        } else {
+          presentList = data.presentList[selectedYear][selectedMonth][selectedClass];
+          if (presentList == null) {
+            presentList = [];
+          }
+        }
+      }
     }
 
-    if (period.isPresent) {
+    if (presentList.includes(day)) {
       dateNode.classList.add("present");
       dateNode.setAttribute("data-present", true);
     } else {
@@ -174,25 +235,19 @@ function RenderDates() {
       dateNode.setAttribute("data-present", false);
     }
 
-    if (period.timeStamp != null) {
-      dateNode.setAttribute(
-        "data-presentDate",
-        Date(period.timeStamp).toString()
-      );
-    }
-
-    if (day.date_DD === selectedDate) {
+    if (day === selectedDate) {
       dateNode.classList.add("selected");
     }
 
-    dateNode.addEventListener("click", () => SelectDate(dateNode, day.date_DD));
+    dateNode.addEventListener("click", () => SelectDate(dateNode, day));
     dateNode.appendChild(timeNode);
 
     dates.appendChild(dateNode);
-  });
+  }
 }
 
-const classes = [
+
+const dummyClasses = [
   {
     class_id: 1,
     class_name: "Math - III",
@@ -224,6 +279,8 @@ const classes = [
     teacher_name: "Mr. Prashant Vishwakarma",
   },
 ];
+
+let classes = [];
 
 let data = {
   student_id: 0,
@@ -273,51 +330,8 @@ function onStart(sessionStart, sessionEnd, std_name, branch) {
   data.branch = branch;
   data.sessionStart = sessionStart;
   data.sessionEnd = sessionEnd;
-  data.years = [];
-
-  for (let year = sessionStart + 1; year <= sessionEnd; year++) {
-    const yearObj = {
-      date_YYYY: year,
-
-      months: [],
-    };
-
-    for (let month = 1; month <= 12; month++) {
-      const numberOfdays = new Date(year, month, 0).getDate();
-
-      const monthObj = {
-        date_MM: month,
-        date_YYYY: year,
-
-        days: [],
-      };
-
-      for (let day = 1; day <= numberOfdays; day++) {
-        const dayObj = {
-          date_DD: day,
-          date_MM: month,
-          date_YYYY: year,
-
-          periods: [],
-        };
-
-        for (let i = 0; i <= classes.length; i++) {
-          dayObj.periods.push({
-            period_number: i + 1,
-            class: classes[i],
-            isPresent: false,
-          });
-        }
-
-        monthObj.days.push(dayObj);
-      }
-
-      yearObj.months.push(monthObj);
-    }
-
-    console.dir(yearObj);
-    data.years.push(yearObj);
-  }
+  data.classes = classes;
+  data.years = undefined;
 
   SaveData();
   ShowRegPortal(false);
@@ -431,23 +445,39 @@ function loadBackup() {
   fileInput.click();
 }
 
-const ToggleIsPresent = (_isPresent) => () => {
-  const period = data.years
-    .find((y) => y.date_YYYY === selectedYear)
-    .months.find((m) => m.date_MM === selectedMonth)
-    .days.find((d) => d.date_DD === selectedDate)
-    .periods.find((p) => p.class.class_id === selectedClass);
+function ModifyPresentDate(_makePresent) {
+  let presentList = data.presentList;
 
-  period.isPresent = _isPresent;
-  isPresent = _isPresent;
-
-  if (period.isPresent) {
-    period.timeStamp = new Date(Date.now());
-    presentDate = period.timeStamp;
-  } else {
-    period.timeStamp = null;
-    presentDate = null;
+  if (presentList == null) {
+    data.presentList = {};
   }
+
+  presentList = data.presentList[selectedYear];
+  if (presentList == null) {
+    data.presentList[selectedYear] = {};
+  }
+
+  presentList = data.presentList[selectedYear][selectedMonth];
+  if (presentList == null) {
+    data.presentList[selectedYear][selectedMonth] = {};
+  }
+
+  presentList = data.presentList[selectedYear][selectedMonth][selectedClass];
+  if (presentList == null) {
+    data.presentList[selectedYear][selectedMonth][selectedClass] = [];
+  }
+
+  if (_makePresent) {
+    data.presentList[selectedYear][selectedMonth][selectedClass].push(selectedDate);
+  } else {
+    data.presentList[selectedYear][selectedMonth][selectedClass].filter(_date => _date != selectedDate);
+
+  }
+}
+
+const ToggleIsPresent = (_isPresent) => () => {
+  ModifyPresentDate(_isPresent);
+  isPresent = _isPresent;
 
   RenderDayControl();
   RenderDates();
@@ -458,6 +488,7 @@ presentButton.addEventListener("click", ToggleIsPresent(true));
 absentButton.addEventListener("click", ToggleIsPresent(false));
 
 function SaveData(_dataString) {
+
   const dataString = JSON.stringify(
     _dataString ? JSON.parse(_dataString) : data
   );
@@ -468,6 +499,31 @@ function LoadData(doFreshLoad = false) {
   const dataString = localStorage.getItem("data");
   if (dataString != null) {
     data = JSON.parse(dataString);
+
+    // In case someone has data saved but using old version
+    if (data.classes == null) {
+      data.classes = dummyClasses;
+    }
+    if (data.years != null) {
+      //Restore old data format to new
+      data.years.forEach(year => {
+        selectedYear = year.date_YYYY;
+        year.months.forEach(month => {
+          selectedMonth = month.date_MM;
+          month.days.forEach(day => {
+            selectedDate = day.date_DD;
+            day.periods.forEach(period => {
+              selectedClass = period.period_number;
+              if (period.isPresent) {
+                ModifyPresentDate(true);
+              }
+            });
+          });
+        })
+      })
+
+      delete data.years;
+    }
   } else {
     StartRegistration();
     return;
@@ -479,7 +535,7 @@ function LoadData(doFreshLoad = false) {
   }
 
   const now = new Date(Date.now());
-  SelectClass(now.getFullYear(), now.getMonth() + 1, classes[0].class_id);
+  SelectClass(now.getFullYear(), now.getMonth() + 1, data.classes[0].class_id);
 }
 
 const blurEl = document.getElementById("blur");
