@@ -103,6 +103,7 @@ body {
     align-items: center;
     text-align: center;
     padding: .5em 1em;
+    flex-wrap: wrap;
 }
 
 .breadcrum>b>div {

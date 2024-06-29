@@ -470,8 +470,7 @@ function ModifyPresentDate(_makePresent) {
   if (_makePresent) {
     data.presentList[selectedYear][selectedMonth][selectedClass].push(selectedDate);
   } else {
-    data.presentList[selectedYear][selectedMonth][selectedClass].filter(_date => _date != selectedDate);
-
+    data.presentList[selectedYear][selectedMonth][selectedClass] = data.presentList[selectedYear][selectedMonth][selectedClass].filter(_date => _date != selectedDate);
   }
 }
 
