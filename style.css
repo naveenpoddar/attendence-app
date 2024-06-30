@@ -30,7 +30,7 @@ body {
     position: relative;
 }
 
-.calander {
+.calender {
     margin-bottom: 7em;
 }
 
@@ -63,6 +63,15 @@ body {
 #breadcrum-month {
     background-color: #365c9f;
     color: white;
+    flex-grow: 1;
+}
+
+.hintText {
+    font-size: .75em;
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin-top: 1em;
 }
 
 #breadcrum-class {
@@ -134,10 +143,6 @@ body {
     grid-template-columns: repeat(7, 1fr);
 }
 
-/* 
-.date-grid button:first-child {
-    grid-column: attr(data-day);
-} */
 
 .date-grid {
     grid-gap: .1em;
@@ -163,6 +168,12 @@ body {
     color: black;
 }
 
+
+.date-grid button.absent:nth-child(even):not(button.selected) {
+    background-color: hsl(0, 0%, 70%);
+}
+
+
 .date-grid>button.today {
     background-color: white;
     color: black;
@@ -173,10 +184,9 @@ body {
 }
 
 .date-grid>button.selected {
-    background-color: #797979;
+    background: #8da3ff;
+    border: 1px solid #03030a;
 }
-
-
 
 #closeBtn {
     border: none;
@@ -492,7 +502,7 @@ body {
     z-index: 99;
     background: rgba(0, 0, 0, .75);
     width: 100vw;
-    height: 150vh;
+    height: 100vh;
     position: absolute;
     top: 0;
     left: 0;

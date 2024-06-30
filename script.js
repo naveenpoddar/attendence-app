@@ -25,10 +25,14 @@ const absentButton = document.getElementById("absent_button");
 const studentName = document.getElementById("std_name");
 
 const regForm = document.getElementById("reg-form");
-const proceedButton = document.getElementById("proceed-button");
 
 regForm.addEventListener("submit", (e) => {
   e.preventDefault();
+  if (classes.length === 0) {
+    alert("You Must add atlest one lecture");
+    AddNewLecture();
+    return;
+  }
   const fd = new FormData(regForm);
   const formData = {};
   for (const [key, value] of fd) {
@@ -69,10 +73,13 @@ function StartRegistration() {
 
 addLectureBtn.addEventListener("click", AddNewLecture);
 
+function RandomInt(min = 0, max = Date.now()) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
 
 function AddNewLecture() {
   classes.push({
-    class_id: classes.length + 1,
+    class_id: RandomInt(),
     class_name: "",
     teacher_name: "",
   });
@@ -207,25 +214,7 @@ function RenderDates() {
 
 
 
-    let presentList = data.presentList;
-    if (presentList == null) {
-      presentList = [];
-    } else {
-      presentList = data.presentList[selectedYear];
-      if (presentList == null) {
-        presentList = [];
-      } else {
-        presentList = data.presentList[selectedYear][selectedMonth];
-        if (presentList == null) {
-          presentList = [];
-        } else {
-          presentList = data.presentList[selectedYear][selectedMonth][selectedClass];
-          if (presentList == null) {
-            presentList = [];
-          }
-        }
-      }
-    }
+    let presentList = GetPresentList();
 
     if (presentList.includes(day)) {
       dateNode.classList.add("present");
@@ -237,6 +226,7 @@ function RenderDates() {
 
     if (day === selectedDate) {
       dateNode.classList.add("selected");
+      isPresent = presentList.includes(day);
     }
 
     dateNode.addEventListener("click", () => SelectDate(dateNode, day));
@@ -244,6 +234,30 @@ function RenderDates() {
 
     dates.appendChild(dateNode);
   }
+}
+
+function GetPresentList() {
+  let presentList = data.presentList;
+  if (presentList == null) {
+    presentList = [];
+  } else {
+    presentList = data.presentList[selectedYear];
+    if (presentList == null) {
+      presentList = [];
+    } else {
+      presentList = data.presentList[selectedYear][selectedMonth];
+      if (presentList == null) {
+        presentList = [];
+      } else {
+        presentList = data.presentList[selectedYear][selectedMonth][selectedClass];
+        if (presentList == null) {
+          presentList = [];
+        }
+      }
+    }
+  }
+
+  return presentList;
 }
 
 
@@ -340,17 +354,28 @@ function onStart(sessionStart, sessionEnd, std_name, branch) {
 }
 
 function SelectDate(el, day) {
-  // const _test = document.querySelector("button");
+  if (selectedDate !== -1) {
+    let allDates = [...dates.children];
+    let lastSelectedDate = allDates[selectedDate - 1];
+    lastSelectedDate.classList.remove("selected");
+  }
+
   selectedDate = day;
   presentButton.disabled = false;
   absentButton.disabled = false;
-  RenderDates();
+  isPresent = GetPresentList().includes(day);
 
-  let pd = el.getAttribute("data-presentDate");
+  if (isPresent) {
+    el.classList.add("present");
+    el.classList.remove("absent");
+  } else {
+    el.classList.add("absent");
+    el.classList.remove("present");
+  }
+  el.setAttribute("data-present", isPresent);
 
-  presentDate = pd != null ? new Date(pd) : null;
-  isPresent = el.getAttribute("data-present") === "true";
-
+  el.classList.add("selected");
+  // RenderDates();
   RenderDayControl();
 }
 
@@ -358,22 +383,11 @@ function RenderDayControl() {
   if (isPresent) {
     absentButton.classList.remove("hidden");
     presentButton.disabled = true;
+    presentButton.textContent = `You are Present`;
   } else {
     absentButton.classList.add("hidden");
     presentButton.disabled = false;
-  }
-
-  if (presentDate != null) {
-    let pd = new Date(presentDate);
-    const timeString = pd.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-
-    presentButton.textContent = `Marked Present At [${timeString}]`;
-  } else {
-    presentButton.textContent = "Mark Present";
+    presentButton.textContent = "Write Present";
   }
 }
 
@@ -474,12 +488,23 @@ function ModifyPresentDate(_makePresent) {
   }
 }
 
-const ToggleIsPresent = (_isPresent) => () => {
+const ToggleIsPresent = (_isPresent) => (e) => {
+  let allDates = [...dates.children];
+  let dateButton = allDates[selectedDate - 1];
   ModifyPresentDate(_isPresent);
   isPresent = _isPresent;
 
+  if (_isPresent) {
+    dateButton.classList.add("present");
+    dateButton.classList.remove("absent");
+  } else {
+    dateButton.classList.add("absent");
+    dateButton.classList.remove("present");
+  }
+  dateButton.setAttribute("data-present", _isPresent);
+
   RenderDayControl();
-  RenderDates();
+  // RenderDates();
   SaveData();
 };
 
@@ -585,3 +610,56 @@ function GetInput(_selectTitle, _options) {
     portalEl.classList.remove("hidden");
   });
 }
+
+
+const calenderEl = document.getElementById("calender");
+let startX, startY, movingX, movingY;
+const swipeThreshold = 100; // Minimum swipe distance in pixels
+
+calenderEl.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+  movingX = startX; // Initialize movingX to startX
+  movingY = startY;
+});
+
+calenderEl.addEventListener("touchmove", e => {
+  movingX = e.touches[0].clientX;
+  movingY = e.touches[0].clientY;
+});
+
+calenderEl.addEventListener("touchend", e => {
+  const diffX = movingX - startX;
+  const diffY = movingY - startY;
+
+  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > swipeThreshold) {
+    if (diffX > 0) {
+      // Right Swipe
+      console.log("Right");
+      if (selectedMonth === 1) {
+        if (selectedYear === data.sessionStart) {
+          return;
+        }
+        selectedYear--;
+        selectedMonth = 12;
+      } else {
+        selectedMonth--;
+      }
+      SelectClass(selectedYear, selectedMonth, selectedClass);
+    } else {
+      // Left Swipe
+      console.log("Left");
+      if (selectedMonth === 12) {
+        if (selectedYear === data.sessionEnd) {
+          return;
+        }
+        selectedYear++;
+        selectedMonth = 1;
+      } else {
+        selectedMonth++;
+      }
+      SelectClass(selectedYear, selectedMonth, selectedClass);
+
+    }
+  }
+});
